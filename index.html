@@ -1,2 +1,141 @@
 
-
+<script>
+
+
+
+let result=[];
+
+let gbuff=[];
+
+let git = {
+  
+  // get public file content as ReadableStream
+  'getPublicFileAsStream': async (treeLoc, fileName) => {
+    
+    // map tree location
+    let query = 'https://raw.githubusercontent.com';
+    const [user, repo, contents] = treeLoc;
+
+    // get repository branch
+    let [repoName, branch] = repo.split(':');
+  
+    query += '/' + user + '/' + repoName +
+             '/' + branch +
+             '/' + contents + '/' + fileName;
+  
+    // get the query
+    const resp = await fetch(query);
+    
+    // if received an error
+    if (String(resp.status).startsWith('4')) {
+      
+      return {
+        errorCode: resp.status
+      };
+      
+    }
+    
+    
+    // get data from response
+    
+    const reader = resp.body.getReader();
+    
+    async function readChunk(buffer) {
+      
+      const chunk = await reader.read();
+      
+      if (chunk.done) return;
+      
+      gbuff = new Uint8Array([...gbuff, ...chunk.value]);
+      
+
+      /*if (buffer){ 
+        //buffer = new Uint8Array([...buffer, ...chunk.value]);
+        gbuff = new Uint8Array([...gbuff, ...chunk.value]);
+      }else{
+        buffer = chunk.value;
+      } */
+      
+      return readChunk(buffer);
+      
+    }
+    
+    const data = await readChunk();
+
+    return data;
+    
+  }
+
+};
+
+/*
+let data = [];
+
+
+let chunk = new Uint8Array([1, 2, 3, 4]);
+
+data.push(...chunk);
+
+let chunk2 = new Uint8Array([5, 6, 7, 8]);
+
+data.push(...chunk2);
+
+let chunk3 = new Uint8Array([9, 10, 11, 12]);
+
+data.push(...chunk3);
+
+
+const typedArray = new Uint8Array(data);
+
+console.log(typedArray);
+
+
+function fetchStream(reader) {
+  
+  //const reader = stream.getReader();
+  
+  let charsReceived = 0;
+
+  // read() returns a promise that resolves
+  // when a value has been received
+  reader.read().then(function processText({ done, value }) {
+    // Result objects contain two properties:
+    // done  - true if the stream has already given you all its data.
+    // value - some data. Always undefined when done is true.
+    if (done) {
+      //console.log("Stream complete");
+      //para.textContent = value;
+      return;
+    }
+
+    // value for fetch streams is a Uint8Array
+    charsReceived += value.length;
+    const chunk = value;
+    //let listItem = document.createElement('li');
+    //listItem.textContent = 'Received ' + charsReceived + ' characters so far. Current chunk = ' + chunk;
+    //list2.appendChild(listItem);
+    //console.log(chunk);
+    merged = [...arr, ...name];
+    
+    result += chunk;
+
+    // Read some more, and call this function again
+    return reader.read().then(processText);
+  });
+}
+*/
+
+async function getFile() {
+  
+  const resp = await git.getPublicFileAsStream(['mrdoob', 'three.js:dev', '/build'],
+                                               'three.min.js');
+  
+  console.log(resp);
+  
+}
+
+getFile();
+
+</script>
+
+
