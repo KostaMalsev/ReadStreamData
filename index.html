@@ -40,7 +40,7 @@ let git = {
     
     const reader = resp.body.getReader();
     
-    async function readChunk(buffer) {
+    async function readChunk() {
       
       const chunk = await reader.read();
       
@@ -60,62 +60,7 @@ let git = {
 
 };
 
-/*
-let data = [];
 
-
-let chunk = new Uint8Array([1, 2, 3, 4]);
-
-data.push(...chunk);
-
-let chunk2 = new Uint8Array([5, 6, 7, 8]);
-
-data.push(...chunk2);
-
-let chunk3 = new Uint8Array([9, 10, 11, 12]);
-
-data.push(...chunk3);
-
-
-const typedArray = new Uint8Array(data);
-
-console.log(typedArray);
-
-
-function fetchStream(reader) {
-  
-  //const reader = stream.getReader();
-  
-  let charsReceived = 0;
-
-  // read() returns a promise that resolves
-  // when a value has been received
-  reader.read().then(function processText({ done, value }) {
-    // Result objects contain two properties:
-    // done  - true if the stream has already given you all its data.
-    // value - some data. Always undefined when done is true.
-    if (done) {
-      //console.log("Stream complete");
-      //para.textContent = value;
-      return;
-    }
-
-    // value for fetch streams is a Uint8Array
-    charsReceived += value.length;
-    const chunk = value;
-    //let listItem = document.createElement('li');
-    //listItem.textContent = 'Received ' + charsReceived + ' characters so far. Current chunk = ' + chunk;
-    //list2.appendChild(listItem);
-    //console.log(chunk);
-    merged = [...arr, ...name];
-    
-    result += chunk;
-
-    // Read some more, and call this function again
-    return reader.read().then(processText);
-  });
-}
-*/
 
 async function getFile() {
   
